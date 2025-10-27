@@ -546,11 +546,11 @@
   }
   .md-typeset .admonition.circle-question,
   .md-typeset details.circle-question {
-    border-color: rgb(163, 84, 9);
+    border-color: rgb(237, 213, 157);
   }
   .md-typeset .circle-question > .admonition-title,
   .md-typeset .circle-question > summary {
-    background-color: rgba(241, 113, 27, 0.459);
+    background-color: rgba(243, 193, 66, 0.459);
   }
   .md-typeset .circle-question > .admonition-title::before,
   .md-typeset .circle-question > summary::before {
