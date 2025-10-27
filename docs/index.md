@@ -4,3 +4,6 @@
 </p>
 
 
+!!! info ""
+
+    This lesson provides an introduction to using the [Apptainer container platform](https://apptainer.org). Apptainer is particularly suited to running containers on infrastructure where users don’t have administrative privileges, for example shared infrastructure such as High Performance Computing (HPC) clusters.
