@@ -7,3 +7,11 @@
 !!! info ""
 
     This lesson provides an introduction to using the [Apptainer container platform](https://apptainer.org). Apptainer is particularly suited to running containers on infrastructure where users don’t have administrative privileges, for example shared infrastructure such as High Performance Computing (HPC) clusters.
+
+!!! calendar-days "Content"
+
+    1. [Getting Started with Containers](./1.getting-started-with-containers.md)
+        - What is a container and why might I want to use it?
+    2. [Understanding and Configuring Apptainer Cache and Temporary Directories](./2.configuring-apptainer-cache.md)
+        - Where does Apptainer store images?
+        - How do I configure my cache ?
