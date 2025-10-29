@@ -15,3 +15,7 @@
     2. [Understanding and Configuring Apptainer Cache and Temporary Directories](./2.configuring-apptainer-cache.md)
         - Where does Apptainer store images?
         - How do I configure my cache ?
+    3. [Pull container images from upstream regisries](./3.pull_from_upstream.md)
+        - How to pull a Docker container as an Apptainer
+
+
