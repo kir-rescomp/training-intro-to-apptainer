@@ -17,5 +17,7 @@
         - How do I configure my cache ?
     3. [Pull container images from upstream regisries](./3.pull_from_upstream.md)
         - How to pull a Docker container as an Apptainer
+    4. [How to run a container](./4.running_a_container_interactive_and_slurm.md) 
+    5. [Build an Apptainer](./5.how_to_build_a_container.md)
 
 
