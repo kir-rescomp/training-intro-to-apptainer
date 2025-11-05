@@ -123,3 +123,4 @@ copyright : KIR "Reproducible research using containers-Introduction to Apptaine
 extra_css:
   - stylesheets/extra.css
   - stylesheets/catalogue-return-button.css
+  - stylesheets/side_bar_menu.css
