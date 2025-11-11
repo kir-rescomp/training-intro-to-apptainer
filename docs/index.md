@@ -23,7 +23,6 @@
     4. [Apptainer Image Build](./4.apptainer_image_build.md)
         - Build from Docker registry
         - Build from existing local Docker image
-        - Build from Dockerfile
         - Build from Apptainer definition file
     5. [How to run a container](./5.running_a_container_interactive_and_slurm.md)
 
