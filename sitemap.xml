@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://kir-rescomp.github.io/training-intro-to-apptainer/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://kir-rescomp.github.io/training-intro-to-apptainer/1.getting-started-with-containers/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://kir-rescomp.github.io/training-intro-to-apptainer/2.configuring-apptainer-cache/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://kir-rescomp.github.io/training-intro-to-apptainer/3.apptainer_bind/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://kir-rescomp.github.io/training-intro-to-apptainer/4.apptainer_image_pull_build/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://kir-rescomp.github.io/training-intro-to-apptainer/5.running_a_container_interactive_and_slurm/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+</urlset>

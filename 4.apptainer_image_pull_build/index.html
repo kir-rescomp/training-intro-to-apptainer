@@ -1,0 +1,1117 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="The Kennedy Institute of Rheumatology, NDORMS, University of Oxford">
+      
+      
+        <link rel="canonical" href="https://kir-rescomp.github.io/training-intro-to-apptainer/4.apptainer_image_pull_build/">
+      
+      
+        <link rel="prev" href="../3.apptainer_bind/">
+      
+      
+        <link rel="next" href="../5.running_a_container_interactive_and_slurm/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../images/kir_standalone_logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>4. Apptainer Image Pull and Build - Reproducible Research Using Containers</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Mukta";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../stylesheets/catalogue-return-button.css">
+    
+      <link rel="stylesheet" href="../stylesheets/side_bar_menu.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#4-apptainer-image-pull-and-build" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Reproducible Research Using Containers" class="md-header__button md-logo" aria-label="Reproducible Research Using Containers" data-md-component="logo">
+      
+  <img src="../images/kir_oxford_combined_logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reproducible Research Using Containers
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              4. Apptainer Image Pull and Build
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to system preference" type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kir-rescomp/training-intro-to-apptainer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    kir-rescomp/training-intro-to-apptainer
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Reproducible Research Using Containers" class="md-nav__button md-logo" aria-label="Reproducible Research Using Containers" data-md-component="logo">
+      
+  <img src="../images/kir_oxford_combined_logo.png" alt="logo">
+
+    </a>
+    Reproducible Research Using Containers
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kir-rescomp/training-intro-to-apptainer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    kir-rescomp/training-intro-to-apptainer
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.getting-started-with-containers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Getting Started with Containers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.configuring-apptainer-cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Understanding and Configuring Apptainer Cache and Temporary Directories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.apptainer_bind/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Apptainer Bind: Sharing Data Between Host and Container
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Apptainer Image Pull and Build
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Apptainer Image Pull and Build
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#41-pull-from-docker-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Pull from Docker Registry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-build-from-existing-local-docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Build from Existing Local Docker Image
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Build from Existing Local Docker Image">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-export-docker-image-to-tar-archive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Export Docker Image to tar Archive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-transfer-tar-file-to-bmrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Transfer tar File to BMRC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-build-apptainer-sif-from-tar-archive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Build Apptainer SIF from tar Archive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying-your-converted-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying Your Converted Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-build-from-apptainer-definition-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Build from Apptainer Definition File
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Build from Apptainer Definition File">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-definition-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Definition File
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-from-definition-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build from Definition File
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#definition-file-sections-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Definition File Sections Explained
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advantages-of-definition-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advantages of Definition Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5.running_a_container_interactive_and_slurm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Running a container, both interactively and via Slurm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#41-pull-from-docker-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Pull from Docker Registry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-build-from-existing-local-docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Build from Existing Local Docker Image
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Build from Existing Local Docker Image">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-export-docker-image-to-tar-archive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Export Docker Image to tar Archive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-transfer-tar-file-to-bmrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Transfer tar File to BMRC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-build-apptainer-sif-from-tar-archive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Build Apptainer SIF from tar Archive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying-your-converted-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying Your Converted Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-build-from-apptainer-definition-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Build from Apptainer Definition File
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Build from Apptainer Definition File">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-definition-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Definition File
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-from-definition-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build from Definition File
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#definition-file-sections-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Definition File Sections Explained
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advantages-of-definition-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advantages of Definition Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="4-apptainer-image-pull-and-build">4. Apptainer Image Pull and Build<a class="headerlink" href="#4-apptainer-image-pull-and-build" title="Permanent link">¶</a></h1>
+<p>This section covers different methods for creating Apptainer container images. You can build images from Docker registries, local Docker images, or Apptainer definition files.</p>
+<div class="admonition table">
+<p class="admonition-title">TOC</p>
+<ul>
+<li><a href="#41-pull-from-docker-registry">Pull from Docker Registry</a></li>
+<li><a href="#42-build-from-existing-local-docker-image">Build from Existing Local Docker Image</a><ul>
+<li><a href="#step-1-export-docker-image-to-tar-archive">Step 1: Export Docker Image to tar Archive</a></li>
+<li><a href="#step-2-transfer-tar-file-to-bmrc">Step 2: Transfer tar File to BMRC</a></li>
+<li><a href="#step-3-build-apptainer-sif-from-tar-archive">Step 3: Build Apptainer SIF from tar Archive</a></li>
+<li><a href="#verifying-your-converted-image">Verifying Your Converted Image</a></li>
+</ul>
+</li>
+<li><a href="#43-build-from-apptainer-definition-file">Build from Apptainer Definition File</a><ul>
+<li><a href="#definition-file-sections-explained">Definition File Sections Explained</a></li>
+<li><a href="#advantages-of-definition-files">Advantages of Definition Files</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="41-pull-from-docker-registry">4.1 Pull from Docker Registry<a class="headerlink" href="#41-pull-from-docker-registry" title="Permanent link">¶</a></h2>
+<p>Docker containers (primarily stored in <a href="https://hub.docker.com/">https://hub.docker.com/</a>) can be pulled as Apptainer container images. For example, if we want to pull a specific container from Docker Hub:</p>
+<ul>
+<li>
+<p>Search and find the container registry in <a href="https://hub.docker.com">https://hub.docker.com</a>.</p>
+<ul>
+<li>For this example, the image we are after is <a href="https://hub.docker.com/r/staphb/trimmomatic/tags">https://hub.docker.com/r/staphb/trimmomatic/tags</a></li>
+</ul>
+</li>
+<li>
+<p>Copy the version you prefer with the blue <kbd>Copy</kbd> button next to the corresponding tag. We will use <code>latest</code> as an example</p>
+<ul>
+<li>It will be in the form of <code>docker pull staphb/trimmomatic:latest</code></li>
+<li>In order to pull this as an Apptainer image, remove the word <code>pull</code> and create a URL as <code>docker://staphb/trimmomatic:latest</code></li>
+</ul>
+</li>
+<li>Then pull it with <code>apptainer pull &lt;nameforthelocalimage&gt;.sif docker://staphb/trimmomatic:latest</code><ul>
+<li><code>&lt;nameforthelocalimage&gt;.sif</code> is the name of the file to be saved once pulled. File extension can be anything but it is ideal to use <code>.sif</code> making it easier to identify the container image</li>
+</ul>
+</li>
+</ul>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>apptainer<span class="w"> </span>pull<span class="w"> </span>trimmomatic_0.40.sif<span class="w"> </span>docker://staphb/trimmomatic:latest
+</code></pre></div>
+<p>Example output:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>❯<span class="w">  </span>apptainer<span class="w"> </span>pull<span class="w"> </span>trimmomatic_0.40.sif<span class="w"> </span>docker://staphb/trimmomatic:latest
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>INFO:<span class="w">    </span>Converting<span class="w"> </span>OCI<span class="w"> </span>blobs<span class="w"> </span>to<span class="w"> </span>SIF<span class="w"> </span>format
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>INFO:<span class="w">    </span>Starting<span class="w"> </span>build...
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>INFO:<span class="w">    </span>Fetching<span class="w"> </span>OCI<span class="w"> </span>image...
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="m">28</span>.2MiB<span class="w"> </span>/<span class="w"> </span><span class="m">28</span>.2MiB<span class="w"> </span><span class="o">[======================================================================================================]</span><span class="w"> </span><span class="m">100</span><span class="w"> </span>%<span class="w"> </span><span class="m">17</span>.0<span class="w"> </span>MiB/s<span class="w"> </span>0s
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="m">179</span>.6KiB<span class="w"> </span>/<span class="w"> </span><span class="m">179</span>.6KiB<span class="w"> </span><span class="o">[====================================================================================================]</span><span class="w"> </span><span class="m">100</span><span class="w"> </span>%<span class="w"> </span><span class="m">17</span>.0<span class="w"> </span>MiB/s<span class="w"> </span>0s
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="m">72</span>.0MiB<span class="w"> </span>/<span class="w"> </span><span class="m">72</span>.0MiB<span class="w"> </span><span class="o">[======================================================================================================]</span><span class="w"> </span><span class="m">100</span><span class="w"> </span>%<span class="w"> </span><span class="m">17</span>.0<span class="w"> </span>MiB/s<span class="w"> </span>0s
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>INFO:<span class="w">    </span>Extracting<span class="w"> </span>OCI<span class="w"> </span>image...
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>INFO:<span class="w">    </span>Inserting<span class="w"> </span>Apptainer<span class="w"> </span>configuration...
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>INFO:<span class="w">    </span>Creating<span class="w"> </span>SIF<span class="w"> </span>file...
+</code></pre></div><p></p>
+</div>
+<h2 id="42-build-from-existing-local-docker-image">4.2 Build from Existing Local Docker Image<a class="headerlink" href="#42-build-from-existing-local-docker-image" title="Permanent link">¶</a></h2>
+<p>Apptainer supports local Docker image file conversion. This is useful when you have locally built Docker images that are:</p>
+<ul>
+<li>Built locally on your personal computer or workstation</li>
+<li>Not published to any public registry (Docker Hub, etc.)</li>
+<li>Proprietary or contain sensitive information that cannot be shared publicly</li>
+<li>Custom-built for specific research workflows</li>
+</ul>
+<p>In these cases, you can convert Docker images to Apptainer SIF format for use on HPC systems like BMRC.</p>
+<h3 id="step-1-export-docker-image-to-tar-archive">Step 1: Export Docker Image to tar Archive<a class="headerlink" href="#step-1-export-docker-image-to-tar-archive" title="Permanent link">¶</a></h3>
+<p>On your <strong>local machine</strong> where Docker is installed, export your Docker image to a tar file:</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># List your local Docker images</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker<span class="w"> </span>images
+</code></pre></div>
+<p>Example output:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>REPOSITORY<span class="w">          </span>TAG<span class="w">       </span>IMAGE<span class="w"> </span>ID<span class="w">       </span>CREATED<span class="w">        </span>SIZE
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>myapp<span class="w">               </span>latest<span class="w">    </span>a1b2c3d4e5f6<span class="w">   </span><span class="m">2</span><span class="w"> </span>days<span class="w"> </span>ago<span class="w">     </span><span class="m">1</span>.2GB
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>custom-python<span class="w">       </span><span class="m">3</span>.11<span class="w">      </span>b2c3d4e5f6a7<span class="w">   </span><span class="m">1</span><span class="w"> </span>week<span class="w"> </span>ago<span class="w">     </span>800MB
+</code></pre></div><p></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Export the Docker image to a tar file</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>save<span class="w"> </span>-o<span class="w"> </span>myapp.tar<span class="w"> </span>myapp:latest
+</code></pre></div>
+<p>For multiple images or specific image IDs:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Using image ID</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>docker<span class="w"> </span>save<span class="w"> </span>-o<span class="w"> </span>myimage.tar<span class="w"> </span>a1b2c3d4e5f6
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Multiple images in one tar file</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>docker<span class="w"> </span>save<span class="w"> </span>-o<span class="w"> </span>multiple_images.tar<span class="w"> </span>image1:tag1<span class="w"> </span>image2:tag2
+</code></pre></div><p></p>
+</div>
+<div class="admonition circle-info">
+<p class="admonition-title">File Size Considerations</p>
+<p>Docker tar archives can be large (often several GB). Make sure you have sufficient disk space both locally and on the destination filesystem.</p>
+</div>
+<h3 id="step-2-transfer-tar-file-to-bmrc">Step 2: Transfer tar File to BMRC<a class="headerlink" href="#step-2-transfer-tar-file-to-bmrc" title="Permanent link">¶</a></h3>
+<p>Transfer the tar file to your BMRC account:</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Using scp (from your local machine)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>scp<span class="w"> </span>myapp.tar<span class="w"> </span>username@cluster2.bmrc.ox.ac.uk:/path/to/destination/
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Or using rsync for large files (recommended)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>rsync<span class="w"> </span>-avP<span class="w"> </span>myapp.tar<span class="w"> </span>username@cluster2.bmrc.ox.ac.uk:/path/to/destination/
+</code></pre></div>
+</div>
+<h3 id="step-3-build-apptainer-sif-from-tar-archive">Step 3: Build Apptainer SIF from tar Archive<a class="headerlink" href="#step-3-build-apptainer-sif-from-tar-archive" title="Permanent link">¶</a></h3>
+<p>On <strong>BMRC</strong>, convert the tar archive to Apptainer SIF format:</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Build SIF from Docker tar archive</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>apptainer<span class="w"> </span>build<span class="w"> </span>myapp.sif<span class="w"> </span>docker-archive://myapp.tar
+</code></pre></div>
+<p>Example output:
+</p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>INFO:<span class="w">    </span>Starting<span class="w"> </span>build...
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>INFO:<span class="w">    </span>Extracting<span class="w"> </span>Docker<span class="w"> </span>image<span class="w"> </span>from<span class="w"> </span>archive...
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>INFO:<span class="w">    </span>Creating<span class="w"> </span>SIF<span class="w"> </span>file...
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>INFO:<span class="w">    </span>Build<span class="w"> </span>complete:<span class="w"> </span>myapp.sif
+</code></pre></div><p></p>
+</div>
+<h3 id="verifying-your-converted-image">Verifying Your Converted Image<a class="headerlink" href="#verifying-your-converted-image" title="Permanent link">¶</a></h3>
+<p>After conversion, verify that your Apptainer image works correctly:</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Inspect the container metadata</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>apptainer<span class="w"> </span>inspect<span class="w"> </span>myapp.sif
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Test by entering a shell</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>apptainer<span class="w"> </span>shell<span class="w"> </span>myapp.sif
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># Run a test command</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>myapp.sif<span class="w"> </span>&lt;your-command&gt;
+</code></pre></div>
+</div>
+<h2 id="43-build-from-apptainer-definition-file">4.3 Build from Apptainer Definition File<a class="headerlink" href="#43-build-from-apptainer-definition-file" title="Permanent link">¶</a></h2>
+<p>Apptainer definition files (<code>.def</code> files) are the native way to build Apptainer containers. They provide more control and features specific to HPC environments.</p>
+<h3 id="example-definition-file">Example Definition File<a class="headerlink" href="#example-definition-file" title="Permanent link">¶</a></h3>
+<p>Here's an equivalent Apptainer definition file with the same content as the Dockerfile example:</p>
+<div class="admonition terminal">
+<p class="admonition-title">code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; myimage.def</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="s">BootStrap: docker</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="s">From: ubuntu:20.04</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="s">%post</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="s">    # Update and install basic tools</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="s">    apt-get -y update</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="s">    apt-get install -y wget curl</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="s">    apt-get clean</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="s">    rm -rf /var/lib/apt/lists/*</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="s">%environment</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="s">    export LANG=C.UTF-8</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="s">    export LC_ALL=C.UTF-8</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="s">%runscript</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="s">    echo "Container started in /workspace"</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="s">    cd /workspace</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="s">    exec /bin/bash "$@"</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="s">%labels</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="s">    Author your.email@example.com</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="s">    Version v1.0.0</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="s">%help</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="s">    This is a basic Ubuntu 20.04 container with wget and curl installed.</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a><span class="s">    Use: apptainer shell myimage.sif</span>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="s">EOF</span>
+</code></pre></div>
+</div>
+<h3 id="build-from-definition-file">Build from Definition File<a class="headerlink" href="#build-from-definition-file" title="Permanent link">¶</a></h3>
+<p>Although BMRC does not have a dedicated sandbox to build containers at the moment, <code>fakeroot</code> is enabled in both the login nodes and compute nodes allowing researchers to build containers as needed.</p>
+<div class="admonition container">
+<p class="admonition-title">Build a container on a BMRC login node</p>
+<p>Build command follows the format of <code>apptainer build --force --fakeroot NAME_OF_THE_CONTAINER.sif name_of_the.def</code></p>
+<p><strong>Important:</strong> If you have <code>$APPTAINER_BIND</code> set globally, unset it with <code>unset APPTAINER_BIND</code> for <code>apptainer build</code> commands. Otherwise the build commands will fail as bind mounts set via this environment variable are NOT supported during build operations.</p>
+<ul>
+<li>The build process executes in a special, isolated environment and does NOT honor the <code>APPTAINER_BIND</code> or <code>APPTAINER_BINDPATH</code> environment variables.</li>
+<li>Only directories specified with the <code>--bind</code> argument are recognized and mounted during the build's <code>%post</code> or <code>%test</code> sections, if the destination mount points already exist in the bootstrap image</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">unset</span><span class="w"> </span>APPTAINER_BIND
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>apptainer<span class="w"> </span>build<span class="w"> </span>--force<span class="w"> </span>--fakeroot<span class="w"> </span>myimage.sif<span class="w"> </span>myimage.def
+</code></pre></div>
+</div>
+<div class="admonition container">
+<p class="admonition-title">Build a container on BMRC via Slurm job</p>
+<p>Since some container builds can consume a significant amount of CPUs and memory, our recommendation is to perform these builds via a Slurm job (either interactive or batch queue). Unfortunately, BMRC compute nodes do not have www access by default. <strong>Please contact the KIR Research Computing Manager for assistance configuring your environment to allow compute nodes www access.</strong></p>
+</div>
+<h3 id="definition-file-sections-explained">Definition File Sections Explained<a class="headerlink" href="#definition-file-sections-explained" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>BootStrap</strong>: Specifies the bootstrap agent (docker, library, localimage, etc.)</li>
+<li><strong>From</strong>: The base image to start from</li>
+<li><strong>%post</strong>: Commands to execute during build (like RUN in Dockerfile)</li>
+<li><strong>%environment</strong>: Environment variables set at runtime</li>
+<li><strong>%runscript</strong>: Commands executed when container is run with <code>apptainer run</code></li>
+<li><strong>%labels</strong>: Metadata labels for the container</li>
+<li><strong>%help</strong>: Help text displayed with <code>apptainer run-help</code></li>
+</ul>
+<h3 id="advantages-of-definition-files">Advantages of Definition Files<a class="headerlink" href="#advantages-of-definition-files" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Reproducibility</strong>: Definition files are text-based and version-controllable</li>
+<li><strong>HPC-specific features</strong>: Better integration with HPC environments</li>
+<li><strong>Sections</strong>: Clear separation of build-time and runtime configurations</li>
+<li><strong>Documentation</strong>: Built-in help and label sections</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../3.apptainer_bind/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 3. Apptainer Bind: Sharing Data Between Host and Container">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                3. Apptainer Bind: Sharing Data Between Host and Container
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../5.running_a_container_interactive_and_slurm/" class="md-footer__link md-footer__link--next" aria-label="Next: 5. Running a container, both interactively and via Slurm">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                5. Running a container, both interactively and via Slurm
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      KIR "Reproducible research using containers-Introduction to Apptainer" is licensed under a <a rel="noopener" target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
