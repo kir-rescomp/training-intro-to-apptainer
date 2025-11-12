@@ -20,9 +20,10 @@
         - Where does Apptainer store images?
         - How do I configure my cache ?
     3. [Apptainer Bind - Sharing Data between host and container](./3.apptainer_bind.md)
-    4. [Pull container images from upstream regisries](./4.pull_from_upstream.md)
-        - How to pull a Docker container as an Apptainer
-    5. [How to run a container](./5.running_a_container_interactive_and_slurm.md) 
-    6. [Build an Apptainer](./6.how_to_build_a_container.md)
+    4. [Apptainer Image Pull and Build](./4.apptainer_image_pull_build.md)
+        - Pull from Docker registry
+        - Build from existing local Docker image
+        - Build from Apptainer definition file
+    5. [How to run a container](./5.running_a_container_interactive_and_slurm.md)
 
 
